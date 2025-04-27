@@ -17,6 +17,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = "/tmp/flask_session"  # Use /tmp for session storage on Render
 app.config["SESSION_FILE_THRESHOLD"] = 500
+app.secret_key = os.getenv("SECRET_KEY", "your-secret-key-here")  # Ensure a secret key is set for session management
 Session(app)
 
 # Configure upload folder
@@ -47,6 +48,7 @@ You are an AI-based expense categorizer. Respond to queries about categorizing e
 def init_db():
     conn = None
     try:
+        print(f"Attempting to initialize database: host={DB_HOST}, dbname={DB_NAME}, user={DB_USER}, port={DB_PORT}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -84,6 +86,7 @@ def initialize_database():
 def save_chat(user_message, ai_response):
     conn = None
     try:
+        print(f"Attempting to save chat: user_message={user_message}, ai_response={ai_response}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -107,6 +110,7 @@ def save_chat(user_message, ai_response):
 def get_all_chats():
     conn = None
     try:
+        print(f"Attempting to connect to database for retrieving chats: host={DB_HOST}, dbname={DB_NAME}, user={DB_USER}, port={DB_PORT}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -133,6 +137,7 @@ def hash_password(password):
 def register_user(username, password):
     conn = None
     try:
+        print(f"Attempting to register user: username={username}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -145,7 +150,7 @@ def register_user(username, password):
         hashed_password = hash_password(password)
         c.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
         conn.commit()
-        print(f"User {username} registered successfully")
+        print(f"User {username} registered successfully with hashed password: {hashed_password}")
     except psycopg2.IntegrityError as e:
         print(f"Registration failed: Username {username} already exists, error: {e}")
         return False
@@ -163,6 +168,7 @@ def register_user(username, password):
 def login_user(username, password):
     conn = None
     try:
+        print(f"Attempting to login user: username={username}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -176,7 +182,7 @@ def login_user(username, password):
         c.execute("SELECT user_id FROM users WHERE username = %s AND password = %s", (username, hashed_password))
         user = c.fetchone()
         if user:
-            print(f"User {username} logged in successfully with user_id {user[0]}")
+            print(f"User {username} logged in successfully with user_id {user[0]} and hashed password: {hashed_password}")
             return user[0]
         print(f"Login failed for user {username}: Invalid credentials")
         return None
@@ -192,6 +198,7 @@ def login_user(username, password):
 
 def extract_text_from_image(image_file):
     try:
+        print(f"Extracting text from image: {image_file}")
         img = Image.open(image_file)
         img = img.convert('L')
         img = img.point(lambda x: 0 if x < 128 else 255, '1')
@@ -215,6 +222,7 @@ def generate_response(query):
 @app.route('/')
 def home():
     if 'user_id' not in session:
+        print("No user_id in session, redirecting to login")
         return redirect(url_for('login'))
     session['messages'] = []
     print(f"Redirecting to home for user_id {session.get('user_id')}")
@@ -227,11 +235,11 @@ def login():
         print("Received POST request for login")
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
-        print(f"Attempting login for username: {username}")
+        print(f"Attempting login for username: {username} with password: {password}")
         user_id = login_user(username, password)
         if user_id is not None:
             session['user_id'] = user_id
-            print(f"Session set for user_id {user_id}, redirecting to home")
+            print(f"Login successful, session set for user_id {user_id}, redirecting to home")
             return redirect(url_for('home'))
         print("Login failed, rendering login.html with error")
         error_msg = "Invalid username or password."
@@ -248,7 +256,7 @@ def register():
         print("Received POST request for register")
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
-        print(f"Attempting registration for username: {username}")
+        print(f"Attempting registration for username: {username} with password: {password}")
         if register_user(username, password):
             print(f"Registration successful for {username}, redirecting to login")
             return redirect(url_for('login'))
@@ -262,6 +270,7 @@ def register():
 
 @app.route('/logout')
 def logout():
+    print(f"Logging out user with user_id {session.get('user_id')}")
     session.pop('user_id', None)
     session['messages'] = []
     print("User logged out, redirecting to login")
@@ -270,8 +279,9 @@ def logout():
 @app.route('/chat', methods=['POST'])
 def chat():
     if 'user_id' not in session:
+        print("No user_id in session, redirecting to login")
         return redirect(url_for('login'))
-    print("Entering /chat route")
+    print(f"Entering /chat route for user_id {session.get('user_id')}")
     user_query = request.form.get('query', '').strip()
     receipt_image = request.files.get('receipt_image')
     action = request.form.get('action', '')
@@ -317,8 +327,9 @@ def chat():
 @app.route('/view_past')
 def view_past():
     if 'user_id' not in session:
+        print("No user_id in session, redirecting to login")
         return redirect(url_for('login'))
-    print("Entering /view_past route")
+    print(f"Entering /view_past route for user_id {session.get('user_id')}")
     chats = get_all_chats()
     if not chats:
         print("No chats found in database.")

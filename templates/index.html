@@ -67,12 +67,16 @@
                 <h1 class="text-xl font-bold text-white">Track.it</h1>
             </div>
             <div class="flex space-x-2">
-                <button class="past-chats-button bg-[#2f6b5b] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300" @click="window prognoses.location.href='/view_past'" title="Past Chats">
+                <a href="{{ url_for('view_past') }}" 
+                   class="past-chats-button bg-[#2f6b5b] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300" 
+                   title="Past Chats">
                     ⏳
-                </button>
-                <button class="logout-button bg-[#b91c1c] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300" @click="window.location.href='/logout'" title="Logout">
+                </a>
+                <a href="{{ url_for('logout') }}"
+                   class="logout-button bg-[#b91c1c] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300" 
+                   title="Logout">
                     🚪
-                </button>
+                </a>
             </div>
         </div>
         <div class="chat-messages flex-1 overflow-y-auto p-6 flex flex-col gap-4 bg-[#0a1f1b]">
