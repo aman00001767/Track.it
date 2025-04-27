@@ -106,9 +106,16 @@
             <form method="POST" action="/chat" @submit="sendMessage($event)" enctype="multipart/form-data">
                 <div class="relative flex flex-col gap-4">
                     <!-- Text Input -->
-                    <textarea name="query" placeholder="Ask about expense categorization or upload a receipt..."
-                              class="w-full p-3 pr-12 border border-[#2f6b5b] rounded-lg bg-[#1a3c34] text-gray-200 focus:border-[#d4af37] focus:outline-none resize-none h-16 money-icon"
-                              x-model="messageInput" @keydown.enter.prevent="if ($event.shiftKey) return; if (messageInput.trim() || $el.closest('form').querySelector('input[type=file]').files.length) $el.closest('form').submit()"></textarea>
+                    <div class="relative">
+                        <textarea name="query" placeholder="Ask about expense categorization or upload a receipt..."
+                                  class="w-full p-3 pr-12 border border-[#2f6b5b] rounded-lg bg-[#1a3c34] text-gray-200 focus:border-[#d4af37] focus:outline-none resize-none h-16 money-icon"
+                                  x-model="messageInput"
+                                  @keydown.enter="handleEnter($event)"></textarea>
+                        <!-- Submit Button -->
+                        <button type="submit" class="send-button absolute right-1/2 transform translate-x-1/2 bottom-2 bg-[#2f6b5b] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300 gold-glow">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        </button>
+                    </div>
                     <!-- File Input -->
                     <div class="flex items-center gap-2">
                         <label class="bg-[#2f6b5b] text-white rounded-lg px-4 py-2 cursor-pointer hover:bg-[#d4af37] transition-colors duration-300">
@@ -117,12 +124,8 @@
                         </label>
                         <span class="text-gray-400 text-sm">Supports PNG, JPG, JPEG</span>
                     </div>
-                    <!-- Submit Button -->
-                    <button type="submit" class="send-button absolute right-3 bottom-20 bg-[#2f6b5b] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300 gold-glow">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                    </button>
                 </div>
-                <input type="hidden" name="action" value="send">
+                    <input type="hidden" name="action" value="send">
             </form>
         </div>
     </div>
@@ -175,6 +178,22 @@
             setTimeout(() => {
                 document.querySelector('[x-data]').__x.$data.typing = false;
             }, 1000);
+        }
+
+        function handleEnter(event) {
+            const textarea = event.target;
+            const form = textarea.closest('form');
+            const fileInput = form.querySelector('input[type=file]');
+            if (event.shiftKey) {
+                // Allow default behavior (new line) for Shift+Enter
+                return;
+            } else {
+                // Prevent default Enter behavior (new line) and submit form
+                event.preventDefault();
+                if (textarea.value.trim() || fileInput.files.length) {
+                    form.submit();
+                }
+            }
         }
     </script>
 </body>

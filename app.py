@@ -198,13 +198,18 @@ def login_user(username, password):
 def generate_response(query, image_path=None):
     try:
         print(f"Generating response for query: {query}, image_path: {image_path}")
-        contents = [{"parts": [{"text": f"{SYSTEM_PROMPT}\nUser query: {query}"}]}]
+        parts = [{"text": f"{SYSTEM_PROMPT}\nUser query: {query}"}]
         if image_path:
             print(f"Uploading image to Gemini API: {image_path}")
-            file = genai.upload_file(image_path, mime_type="image/jpeg")
-            contents[0]["parts"].append({"fileData": {"fileUri": file.uri, "mimeType": "image/jpeg"}})
-            contents[0]["parts"][0]["text"] += "\nPlease categorize the expenses from this receipt image."
-        response = model.generate_content(contents)
+            uploaded_file = genai.upload_file(image_path, mime_type="image/jpeg")
+            parts.append({
+                "file_data": {
+                    "file_uri": uploaded_file.uri,
+                    "mime_type": "image/jpeg"
+                }
+            })
+            parts[0]["text"] += "\nPlease categorize the expenses from this receipt image."
+        response = model.generate_content(parts)
         print(f"Generated response: {response.text}")
         return response.text
     except Exception as e:
