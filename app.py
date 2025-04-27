@@ -45,13 +45,15 @@ You are an AI-based expense categorizer. Respond to queries about categorizing e
 """
 
 def init_db():
+    conn = None
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
             user=DB_USER,
             password=DB_PASS,
-            port=DB_PORT
+            port=DB_PORT,
+            connect_timeout=10
         )
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS chats
@@ -69,7 +71,7 @@ def init_db():
         print(f"Failed to initialize database: {e}")
         raise
     finally:
-        if conn:
+        if conn is not None:
             conn.close()
 
 @app.before_request
@@ -91,7 +93,8 @@ def save_chat(user_message, ai_response):
             database=DB_NAME,
             user=DB_USER,
             password=DB_PASS,
-            port=DB_PORT
+            port=DB_PORT,
+            connect_timeout=10
         )
         c = conn.cursor()
         c.execute("INSERT INTO chats (user_message, ai_response) VALUES (%s, %s)", (user_message, ai_response))
@@ -102,7 +105,7 @@ def save_chat(user_message, ai_response):
     except Exception as e:
         print(f"Error saving chat: {e}")
     finally:
-        if conn:
+        if conn is not None:
             conn.close()
 
 def get_all_chats():
@@ -113,7 +116,8 @@ def get_all_chats():
             database=DB_NAME,
             user=DB_USER,
             password=DB_PASS,
-            port=DB_PORT
+            port=DB_PORT,
+            connect_timeout=10
         )
         c = conn.cursor()
         c.execute("SELECT chat_id, user_message, ai_response, timestamp FROM chats")
@@ -124,7 +128,7 @@ def get_all_chats():
         print(f"Error retrieving chats: {e}")
         return []
     finally:
-        if conn:
+        if conn is not None:
             conn.close()
 
 def hash_password(password):
@@ -156,7 +160,7 @@ def register_user(username, password):
         print(f"Unexpected error during registration: {e}")
         return False
     finally:
-        if conn:
+        if conn is not None:
             conn.close()
     return True
 
@@ -187,7 +191,7 @@ def login_user(username, password):
         print(f"Unexpected error during login: {e}")
         return None
     finally:
-        if conn:
+        if conn is not None:
             conn.close()
 
 def extract_text_from_image(image_file):
@@ -234,7 +238,10 @@ def login():
             print(f"Session set for user_id {user_id}, redirecting to home")
             return redirect(url_for('home'))
         print("Login failed, rendering login.html with error")
-        return render_template('login.html', error="Invalid username or password, or database connection failed.")
+        error_msg = "Invalid username or password."
+        if not getattr(g, 'db_initialized', False):
+            error_msg += " Database connection failed; please try again later."
+        return render_template('login.html', error=error_msg)
     print("Rendering login.html for GET request")
     return render_template('login.html')
 
@@ -250,7 +257,10 @@ def register():
             print(f"Registration successful for {username}, redirecting to login")
             return redirect(url_for('login'))
         print("Registration failed, rendering register.html with error")
-        return render_template('register.html', error="Username already exists or database connection failed.")
+        error_msg = "Username already exists."
+        if not getattr(g, 'db_initialized', False):
+            error_msg += " Database connection failed; please try again later."
+        return render_template('register.html', error=error_msg)
     print("Rendering register.html for GET request")
     return render_template('register.html')
 
