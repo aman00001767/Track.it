@@ -1,13 +1,15 @@
 from flask import Flask, request, render_template, session, redirect, url_for
 from flask_session import Session
 import google.generativeai as genai
-import sqlite3
+import psycopg2
+from psycopg2 import sql
 import os
 from datetime import datetime
 import hashlib
 from PIL import Image
 import pytesseract
 import io
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -22,8 +24,14 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Load API key from environment variable (hardcoded for now, consider using os.getenv)
-api_key = "AIzaSyDMz8KbMluDCKlBmm-13L8xRHvoTtTgwHo"
+# Load environment variables
+load_dotenv()
+api_key = os.getenv("API_KEY", "AIzaSyDMz8KbMluDCKlBmm-13L8xRHvoTtTgwHo")  # Fallback for local testing
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+DB_PORT = os.getenv("DB_PORT", "5432")
 
 # Configure Gemini API
 genai.configure(api_key=api_key)
@@ -34,99 +42,130 @@ SYSTEM_PROMPT = """
 You are an AI-based expense categorizer. Respond to queries about categorizing expenses or tracking financial management with helpful suggestions. Use natural, human-like language for out-of-scope queries, such as 'Hmm, I'm not really equipped to answer that—I'm all about expense tracking!', use more answers like this for out of scope queries'
 """
 
-# Explicitly set database path (consider using relative path or environment variable)
-DB_PATH = r"C:\Users\d2vv8\OneDrive\Desktop\INT428\trackit_chats.db"
-
 # Set Tesseract path (adjust for your system)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 def init_db():
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         c = conn.cursor()
         # Create chats table
         c.execute('''CREATE TABLE IF NOT EXISTS chats
-                     (chat_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     (chat_id SERIAL PRIMARY KEY,
                       user_message TEXT,
                       ai_response TEXT,
-                      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
+                      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
         # Create users table
         c.execute('''CREATE TABLE IF NOT EXISTS users
-                     (user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     (user_id SERIAL PRIMARY KEY,
                       username TEXT UNIQUE,
                       password TEXT)''')
         conn.commit()
-        print(f"Database initialized successfully at {DB_PATH}")
-    except sqlite3.Error as e:
+        print("Database initialized successfully with PostgreSQL")
+    except Exception as e:
         print(f"Database initialization error: {e}")
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 def save_chat(user_message, ai_response):
     try:
-        conn = sqlite3.connect(DB_PATH, timeout=10)
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         c = conn.cursor()
-        c.execute("INSERT INTO chats (user_message, ai_response) VALUES (?, ?)", (user_message, ai_response))
+        c.execute("INSERT INTO chats (user_message, ai_response) VALUES (%s, %s)", (user_message, ai_response))
         conn.commit()
-        last_id = c.lastrowid
-        c.execute("SELECT * FROM chats WHERE chat_id = ?", (last_id,))
-        verify = c.fetchone()
-        print(f"Chat saved successfully with ID {last_id}: User - {user_message}, AI - {ai_response}, Verified: {verify}")
-    except sqlite3.Error as e:
+        c.execute("SELECT chat_id FROM chats WHERE chat_id = currval(pg_get_serial_sequence('chats', 'chat_id'))")
+        last_id = c.fetchone()[0]
+        print(f"Chat saved successfully with ID {last_id}: User - {user_message}, AI - {ai_response}")
+    except Exception as e:
         print(f"Error saving chat: {e}")
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 def get_all_chats():
     try:
-        conn = sqlite3.connect(DB_PATH, timeout=10)
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         c = conn.cursor()
         c.execute("SELECT chat_id, user_message, ai_response, timestamp FROM chats")
         chats = c.fetchall()
         print(f"Retrieved {len(chats)} chats from view_past: {chats}")
         return chats
-    except sqlite3.Error as e:
+    except Exception as e:
         print(f"Error retrieving chats: {e}")
         return []
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def register_user(username, password):
     try:
-        conn = sqlite3.connect(DB_PATH, timeout=10)
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         c = conn.cursor()
         hashed_password = hash_password(password)
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
+        c.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
         conn.commit()
         print(f"User {username} registered successfully")
-    except sqlite3.IntegrityError:
+    except psycopg2.IntegrityError:
         print(f"Username {username} already exists")
         return False
-    except sqlite3.Error as e:
+    except Exception as e:
         print(f"Error registering user: {e}")
         return False
     finally:
-        conn.close()
+        if conn:
+            conn.close()
     return True
 
 def login_user(username, password):
     try:
-        conn = sqlite3.connect(DB_PATH, timeout=10)
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         c = conn.cursor()
         hashed_password = hash_password(password)
-        c.execute("SELECT user_id FROM users WHERE username = ? AND password = ?", (username, hashed_password))
+        c.execute("SELECT user_id FROM users WHERE username = %s AND password = %s", (username, hashed_password))
         user = c.fetchone()
         if user:
             return user[0]  # Return user_id
         return None
-    except sqlite3.Error as e:
+    except Exception as e:
         print(f"Error logging in: {e}")
         return None
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 def extract_text_from_image(image_file):
     try:
@@ -271,6 +310,13 @@ def view_past():
     print(f"Formatted chats for display: {formatted_chats}")
     return render_template('index.html', messages=formatted_chats, show_past=True)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
+
+# WSGI entry point for production
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
+else:
+    from gunicorn import app as gunicorn_app
+    gunicorn_app.run(app)
