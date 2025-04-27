@@ -19,10 +19,14 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure upload folder
-UPLOAD_FOLDER = 'uploads'
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+# Configure upload folder
+UPLOAD_FOLDER = '/opt/render/project/src/uploads'  # Use absolute path for Render
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Create the upload folder at startup with correct permissions
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER, mode=0o755)
+    print(f"Created upload folder: {UPLOAD_FOLDER}")
 
 # Load environment variables
 load_dotenv()
@@ -316,7 +320,5 @@ if __name__ == "__main__":
 
 # WSGI entry point for production
 if __name__ == "__main__":
+    init_db()
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
-else:
-    from gunicorn import app as gunicorn_app
-    gunicorn_app.run(app)
