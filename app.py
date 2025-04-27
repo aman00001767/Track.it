@@ -56,6 +56,7 @@ def init_db():
             connect_timeout=10
         )
         c = conn.cursor()
+        # Create tables if they don't exist
         c.execute('''CREATE TABLE IF NOT EXISTS chats
                      (chat_id SERIAL PRIMARY KEY,
                       user_id INTEGER,
@@ -66,6 +67,11 @@ def init_db():
                      (user_id SERIAL PRIMARY KEY,
                       username TEXT UNIQUE,
                       password TEXT)''')
+        # Check and add user_id column if missing
+        c.execute("SELECT column_name FROM information_schema.columns WHERE table_name='chats' AND column_name='user_id'")
+        if not c.fetchone():
+            c.execute("ALTER TABLE chats ADD COLUMN user_id INTEGER")
+            print("Added user_id column to chats table")
         conn.commit()
         print("Database initialized successfully with PostgreSQL")
         return True
