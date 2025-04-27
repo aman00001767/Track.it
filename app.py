@@ -8,7 +8,6 @@ from datetime import datetime
 import hashlib
 from PIL import Image
 import pytesseract
-import io
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -17,22 +16,19 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = "/tmp/flask_session"  # Use /tmp for session storage on Render
-app.config["SESSION_FILE_THRESHOLD"] = 500  # Limit number of session files
+app.config["SESSION_FILE_THRESHOLD"] = 500
 Session(app)
 
 # Configure upload folder
-# Configure upload folder
-UPLOAD_FOLDER = '/opt/render/project/src/uploads'  # Use absolute path for Render
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# Create the upload folder at sstartup with correct permissions
+UPLOAD_FOLDER = '/opt/render/project/src/uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER, mode=0o755)
     print(f"Created upload folder: {UPLOAD_FOLDER}")
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Load environment variables
 load_dotenv()
-api_key = os.getenv("API_KEY", "AIzaSyDMz8KbMluDCKlBmm-13L8xRHvoTtTgwHo")  # Fallback for local testing
+api_key = os.getenv("API_KEY", "AIzaSyDMz8KbMluDCKlBmm-13L8xRHvoTtTgwHo")
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
 DB_USER = os.getenv("DB_USER")
@@ -48,9 +44,6 @@ SYSTEM_PROMPT = """
 You are an AI-based expense categorizer. Respond to queries about categorizing expenses or tracking financial management with helpful suggestions. Use natural, human-like language for out-of-scope queries, such as 'Hmm, I'm not really equipped to answer that—I'm all about expense tracking!', use more answers like this for out of scope queries'
 """
 
-# Set Tesseract path (adjust for your system)
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
 def init_db():
     try:
         conn = psycopg2.connect(
@@ -61,13 +54,11 @@ def init_db():
             port=DB_PORT
         )
         c = conn.cursor()
-        # Create chats table
         c.execute('''CREATE TABLE IF NOT EXISTS chats
                      (chat_id SERIAL PRIMARY KEY,
                       user_message TEXT,
                       ai_response TEXT,
                       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
-        # Create users table
         c.execute('''CREATE TABLE IF NOT EXISTS users
                      (user_id SERIAL PRIMARY KEY,
                       username TEXT UNIQUE,
@@ -75,12 +66,14 @@ def init_db():
         conn.commit()
         print("Database initialized successfully with PostgreSQL")
     except Exception as e:
-        print(f"Database initialization error: {e}")
+        print(f"Failed to initialize database: {e}")
+        raise
     finally:
         if conn:
             conn.close()
 
 def save_chat(user_message, ai_response):
+    conn = None
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
@@ -102,6 +95,7 @@ def save_chat(user_message, ai_response):
             conn.close()
 
 def get_all_chats():
+    conn = None
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
@@ -126,6 +120,7 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def register_user(username, password):
+    conn = None
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
@@ -181,13 +176,9 @@ def login_user(username, password):
 
 def extract_text_from_image(image_file):
     try:
-        # Open image using Pillow
         img = Image.open(image_file)
-        # Convert to grayscale
         img = img.convert('L')
-        # Binarize the image (black and white) to improve contrast
         img = img.point(lambda x: 0 if x < 128 else 255, '1')
-        # Extract text using pytesseract
         text = pytesseract.image_to_string(img)
         print(f"Extracted text from image: {text}")
         return text
@@ -210,63 +201,69 @@ def home():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     session['messages'] = []
+    print(f"Redirecting to home for user_id {session.get('user_id')}")
     return render_template('index.html', messages=session['messages'], show_past=False)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Entering /login route")
     if request.method == 'POST':
+        print("Received POST request for login")
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
+        print(f"Attempting login for username: {username}")
         user_id = login_user(username, password)
         if user_id is not None:
             session['user_id'] = user_id
             print(f"Session set for user_id {user_id}, redirecting to home")
             return redirect(url_for('home'))
+        print("Login failed, rendering login.html with error")
         return render_template('login.html', error="Invalid username or password, or database connection failed.")
+    print("Rendering login.html for GET request")
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    print("Entering /register route")
     if request.method == 'POST':
+        print("Received POST request for register")
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
+        print(f"Attempting registration for username: {username}")
         if register_user(username, password):
+            print(f"Registration successful for {username}, redirecting to login")
             return redirect(url_for('login'))
-        return render_template('register.html', error="Username already exists")
+        print("Registration failed, rendering register.html with error")
+        return render_template('register.html', error="Username already exists or database connection failed.")
+    print("Rendering register.html for GET request")
     return render_template('register.html')
 
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
     session['messages'] = []
+    print("User logged out, redirecting to login")
     return redirect(url_for('login'))
 
 @app.route('/chat', methods=['POST'])
 def chat():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
+    print("Entering /chat route")
     user_query = request.form.get('query', '').strip()
     receipt_image = request.files.get('receipt_image')
     action = request.form.get('action', '')
     print(f"Processing POST request with query: {user_query}, action: {action}, image: {receipt_image}")
 
-    # Initialize response message
     response = ""
-
     if receipt_image and receipt_image.filename:
-        # Save the uploaded image temporarily
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], receipt_image.filename)
         receipt_image.save(image_path)
         print(f"Image saved to: {image_path}")
-
-        # Extract text from the image
         extracted_text = extract_text_from_image(image_path)
-        
         if "Error" in extracted_text or not extracted_text.strip():
             response = "Sorry, I couldn’t read the receipt. Please upload a clearer image or type the details manually."
         else:
-            # Generate categorization prompt
             categorization_prompt = f"""
             {SYSTEM_PROMPT}
             User uploaded a receipt with the following details:
@@ -278,56 +275,40 @@ def chat():
             4. Summarize the receipt in a concise format.
             """
             response = generate_response(categorization_prompt)
-        
-        # Clean up the saved image
         try:
             os.remove(image_path)
             print(f"Deleted temporary image: {image_path}")
         except Exception as e:
             print(f"Error deleting temporary image: {e}")
-
         session['messages'].append({"text": "Receipt uploaded", "is_user": True})
         session['messages'].append({"text": response, "is_user": False})
         save_chat("Receipt uploaded", response)
-    
     elif user_query:
-        # Handle text query as before
         session['messages'].append({"text": user_query, "is_user": True})
         response = generate_response(user_query)
         session['messages'].append({"text": response, "is_user": False})
         save_chat(user_query, response)
-    
     else:
-        # No input provided
         session['messages'].append({"text": "Please provide a query or upload a receipt.", "is_user": False})
-
     return render_template('index.html', messages=session['messages'], show_past=False)
 
 @app.route('/view_past')
 def view_past():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    print(f"Viewing past chats, action parameter: view_past")
+    print("Entering /view_past route")
     chats = get_all_chats()
     if not chats:
         print("No chats found in database.")
         return render_template('index.html', messages=[{"text": "No past chats available.", "is_user": False}], show_past=True)
-    # Format chats to include is_user flag for user/AI differentiation
     formatted_chats = []
     for chat in chats:
         chat_id, user_message, ai_response, timestamp = chat
-        # Add user message
         formatted_chats.append({"text": user_message, "is_user": True})
-        # Add AI response
         formatted_chats.append({"text": f"{ai_response}, Time - {timestamp}", "is_user": False})
     print(f"Formatted chats for display: {formatted_chats}")
     return render_template('index.html', messages=formatted_chats, show_past=True)
 
-if __name__ == "__main__":
-    init_db()
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
-
-# WSGI entry point for production
 if __name__ == "__main__":
     init_db()
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
