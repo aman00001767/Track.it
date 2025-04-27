@@ -6,8 +6,6 @@ from psycopg2 import sql
 import os
 from datetime import datetime
 import hashlib
-from PIL import Image
-import pytesseract
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -15,9 +13,9 @@ app = Flask(__name__)
 # Configure session
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-app.config["SESSION_FILE_DIR"] = "/tmp/flask_session"  # Use /tmp for session storage on Render
+app.config["SESSION_FILE_DIR"] = "/tmp/flask_session"
 app.config["SESSION_FILE_THRESHOLD"] = 500
-app.secret_key = os.getenv("SECRET_KEY", "your-secret-key-here")  # Ensure a secret key is set for session management
+app.secret_key = os.getenv("SECRET_KEY", "your-secret-key-here")
 Session(app)
 
 # Configure upload folder
@@ -42,7 +40,7 @@ model = genai.GenerativeModel('models/gemini-2.0-flash')
 
 # System prompt to enforce scope
 SYSTEM_PROMPT = """
-You are an AI-based expense categorizer. Respond to queries about categorizing expenses or tracking financial management with helpful suggestions. Use natural, human-like language for out-of-scope queries, such as 'Hmm, I'm not really equipped to answer that—I'm all about expense tracking!', use more answers like this for out of scope queries'
+You are an AI-based expense categorizer. Respond to queries about categorizing expenses or tracking financial management with helpful suggestions. Use natural, human-like language for out-of-scope queries, such as 'Hmm, I'm not really equipped to answer that—I'm all about expense tracking!'
 """
 
 def init_db():
@@ -60,6 +58,7 @@ def init_db():
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS chats
                      (chat_id SERIAL PRIMARY KEY,
+                      user_id INTEGER,
                       user_message TEXT,
                       ai_response TEXT,
                       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
@@ -83,10 +82,10 @@ def initialize_database():
         g.db_initialized = init_db()
         print(f"Database initialization on request: {'Success' if g.db_initialized else 'Failed'}")
 
-def save_chat(user_message, ai_response):
+def save_chat(user_id, user_message, ai_response):
     conn = None
     try:
-        print(f"Attempting to save chat: user_message={user_message}, ai_response={ai_response}")
+        print(f"Attempting to save chat for user_id={user_id}: user_message={user_message}, ai_response={ai_response}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -96,21 +95,21 @@ def save_chat(user_message, ai_response):
             connect_timeout=10
         )
         c = conn.cursor()
-        c.execute("INSERT INTO chats (user_message, ai_response) VALUES (%s, %s)", (user_message, ai_response))
+        c.execute("INSERT INTO chats (user_id, user_message, ai_response) VALUES (%s, %s, %s)", (user_id, user_message, ai_response))
         conn.commit()
         c.execute("SELECT chat_id FROM chats WHERE chat_id = currval(pg_get_serial_sequence('chats', 'chat_id'))")
         last_id = c.fetchone()[0]
-        print(f"Chat saved successfully with ID {last_id}: User - {user_message}, AI - {ai_response}")
+        print(f"Chat saved successfully with ID {last_id}")
     except Exception as e:
         print(f"Error saving chat: {e}")
     finally:
         if conn is not None:
             conn.close()
 
-def get_all_chats():
+def get_all_chats(user_id):
     conn = None
     try:
-        print(f"Attempting to connect to database for retrieving chats: host={DB_HOST}, dbname={DB_NAME}, user={DB_USER}, port={DB_PORT}")
+        print(f"Attempting to retrieve chats for user_id={user_id}")
         conn = psycopg2.connect(
             host=DB_HOST,
             database=DB_NAME,
@@ -120,9 +119,9 @@ def get_all_chats():
             connect_timeout=10
         )
         c = conn.cursor()
-        c.execute("SELECT chat_id, user_message, ai_response, timestamp FROM chats")
+        c.execute("SELECT chat_id, user_message, ai_response, timestamp FROM chats WHERE user_id = %s ORDER BY timestamp DESC LIMIT 50", (user_id,))
         chats = c.fetchall()
-        print(f"Retrieved {len(chats)} chats from view_past: {chats}")
+        print(f"Retrieved {len(chats)} chats for user_id={user_id}: {chats}")
         return chats
     except Exception as e:
         print(f"Error retrieving chats: {e}")
@@ -150,7 +149,7 @@ def register_user(username, password):
         hashed_password = hash_password(password)
         c.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
         conn.commit()
-        print(f"User {username} registered successfully with hashed password: {hashed_password}")
+        print(f"User {username} registered successfully")
     except psycopg2.IntegrityError as e:
         print(f"Registration failed: Username {username} already exists, error: {e}")
         return False
@@ -182,7 +181,7 @@ def login_user(username, password):
         c.execute("SELECT user_id FROM users WHERE username = %s AND password = %s", (username, hashed_password))
         user = c.fetchone()
         if user:
-            print(f"User {username} logged in successfully with user_id {user[0]} and hashed password: {hashed_password}")
+            print(f"User {username} logged in successfully with user_id {user[0]}")
             return user[0]
         print(f"Login failed for user {username}: Invalid credentials")
         return None
@@ -196,23 +195,16 @@ def login_user(username, password):
         if conn is not None:
             conn.close()
 
-def extract_text_from_image(image_file):
+def generate_response(query, image_path=None):
     try:
-        print(f"Extracting text from image: {image_file}")
-        img = Image.open(image_file)
-        img = img.convert('L')
-        img = img.point(lambda x: 0 if x < 128 else 255, '1')
-        text = pytesseract.image_to_string(img)
-        print(f"Extracted text from image: {text}")
-        return text
-    except Exception as e:
-        print(f"Error extracting text from image: {e}")
-        return f"Error extracting text: {e}"
-
-def generate_response(query):
-    try:
-        print(f"Received query: {query}")
-        response = model.generate_content(f"{SYSTEM_PROMPT}\nUser query: {query}")
+        print(f"Generating response for query: {query}, image_path: {image_path}")
+        contents = [{"parts": [{"text": f"{SYSTEM_PROMPT}\nUser query: {query}"}]}]
+        if image_path:
+            print(f"Uploading image to Gemini API: {image_path}")
+            file = genai.upload_file(image_path, mime_type="image/jpeg")
+            contents[0]["parts"].append({"fileData": {"fileUri": file.uri, "mimeType": "image/jpeg"}})
+            contents[0]["parts"][0]["text"] += "\nPlease categorize the expenses from this receipt image."
+        response = model.generate_content(contents)
         print(f"Generated response: {response.text}")
         return response.text
     except Exception as e:
@@ -235,7 +227,7 @@ def login():
         print("Received POST request for login")
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
-        print(f"Attempting login for username: {username} with password: {password}")
+        print(f"Attempting login for username: {username}")
         user_id = login_user(username, password)
         if user_id is not None:
             session['user_id'] = user_id
@@ -256,7 +248,7 @@ def register():
         print("Received POST request for register")
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
-        print(f"Attempting registration for username: {username} with password: {password}")
+        print(f"Attempting registration for username: {username}")
         if register_user(username, password):
             print(f"Registration successful for {username}, redirecting to login")
             return redirect(url_for('login'))
@@ -281,7 +273,8 @@ def chat():
     if 'user_id' not in session:
         print("No user_id in session, redirecting to login")
         return redirect(url_for('login'))
-    print(f"Entering /chat route for user_id {session.get('user_id')}")
+    user_id = session['user_id']
+    print(f"Entering /chat route for user_id {user_id}")
     user_query = request.form.get('query', '').strip()
     receipt_image = request.files.get('receipt_image')
     action = request.form.get('action', '')
@@ -292,34 +285,20 @@ def chat():
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], receipt_image.filename)
         receipt_image.save(image_path)
         print(f"Image saved to: {image_path}")
-        extracted_text = extract_text_from_image(image_path)
-        if "Error" in extracted_text or not extracted_text.strip():
-            response = "Sorry, I couldn’t read the receipt. Please upload a clearer image or type the details manually."
-        else:
-            categorization_prompt = f"""
-            {SYSTEM_PROMPT}
-            User uploaded a receipt with the following details:
-            {extracted_text}
-            Please:
-            1. Identify and list individual expense items (e.g., item name, amount).
-            2. Categorize each item (e.g., groceries, dining, utilities).
-            3. Provide a total amount if possible.
-            4. Summarize the receipt in a concise format.
-            """
-            response = generate_response(categorization_prompt)
+        response = generate_response("Receipt uploaded", image_path=image_path)
+        session['messages'].append({"text": "Receipt uploaded", "is_user": True})
+        session['messages'].append({"text": response, "is_user": False})
+        save_chat(user_id, "Receipt uploaded", response)
         try:
             os.remove(image_path)
             print(f"Deleted temporary image: {image_path}")
         except Exception as e:
             print(f"Error deleting temporary image: {e}")
-        session['messages'].append({"text": "Receipt uploaded", "is_user": True})
-        session['messages'].append({"text": response, "is_user": False})
-        save_chat("Receipt uploaded", response)
     elif user_query:
         session['messages'].append({"text": user_query, "is_user": True})
         response = generate_response(user_query)
         session['messages'].append({"text": response, "is_user": False})
-        save_chat(user_query, response)
+        save_chat(user_id, user_query, response)
     else:
         session['messages'].append({"text": "Please provide a query or upload a receipt.", "is_user": False})
     return render_template('index.html', messages=session['messages'], show_past=False)
@@ -329,10 +308,11 @@ def view_past():
     if 'user_id' not in session:
         print("No user_id in session, redirecting to login")
         return redirect(url_for('login'))
-    print(f"Entering /view_past route for user_id {session.get('user_id')}")
-    chats = get_all_chats()
+    user_id = session['user_id']
+    print(f"Entering /view_past route for user_id {user_id}")
+    chats = get_all_chats(user_id)
     if not chats:
-        print("No chats found in database.")
+        print("No chats found for user.")
         return render_template('index.html', messages=[{"text": "No past chats available.", "is_user": False}], show_past=True)
     formatted_chats = []
     for chat in chats:
@@ -343,6 +323,6 @@ def view_past():
     return render_template('index.html', messages=formatted_chats, show_past=True)
 
 if __name__ == "__main__":
-    if not init_db():  # Attempt to initialize, but don't crash if it fails
+    if not init_db():
         print("Database initialization failed at startup, proceeding without database (limited functionality)")
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)

@@ -50,7 +50,7 @@
             color: #d4af37;
         }
         textarea {
-            background: #1a3c34; /* Darker green to match the theme */
+            background: #1a3c34;
             border-color: #2f6b5b;
         }
         textarea:focus {
@@ -69,12 +69,12 @@
             <div class="flex space-x-2">
                 <a href="{{ url_for('view_past') }}" 
                    class="past-chats-button bg-[#2f6b5b] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300" 
-                   title="Past Chats">
+                   title="Past Chats" aria-label="View Past Chats">
                     ⏳
                 </a>
                 <a href="{{ url_for('logout') }}"
                    class="logout-button bg-[#b91c1c] text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300" 
-                   title="Logout">
+                   title="Logout" aria-label="Logout">
                     🚪
                 </a>
             </div>
@@ -128,11 +128,9 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Auto-scroll to latest message
             const messagesDiv = document.querySelector('.chat-messages');
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-            // Animate messages
             const messages = document.querySelectorAll('.animate-message');
             messages.forEach((msg, index) => {
                 anime({
@@ -145,7 +143,6 @@
                 });
             });
 
-            // Animate buttons on hover
             const buttons = document.querySelectorAll('.send-button, .past-chats-button, .logout-button');
             buttons.forEach(btn => {
                 btn.addEventListener('mouseenter', () => {
@@ -174,12 +171,11 @@
                 event.preventDefault();
                 return;
             }
-            // Simulate typing indicator
             document.querySelector('[x-data]').__x.$data.typing = true;
             setTimeout(() => {
                 document.querySelector('[x-data]').__x.$data.typing = false;
             }, 1000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93550a09cd75b05e',t:'MTc0NTQ5MTgyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
