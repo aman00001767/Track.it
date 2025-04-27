@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for, g
 from flask_session import Session
 import google.generativeai as genai
 import psycopg2
@@ -72,6 +72,17 @@ def init_db():
         if conn:
             conn.close()
 
+@app.before_request
+def initialize_database():
+    if not hasattr(g, 'db_initialized'):
+        try:
+            init_db()
+            g.db_initialized = True
+            print("Database initialized successfully on request")
+        except Exception as e:
+            print(f"Database initialization failed on request: {e}")
+            g.db_initialized = False
+
 def save_chat(user_message, ai_response):
     conn = None
     try:
@@ -127,18 +138,22 @@ def register_user(username, password):
             database=DB_NAME,
             user=DB_USER,
             password=DB_PASS,
-            port=DB_PORT
+            port=DB_PORT,
+            connect_timeout=10
         )
         c = conn.cursor()
         hashed_password = hash_password(password)
         c.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
         conn.commit()
         print(f"User {username} registered successfully")
-    except psycopg2.IntegrityError:
-        print(f"Username {username} already exists")
+    except psycopg2.IntegrityError as e:
+        print(f"Registration failed: Username {username} already exists, error: {e}")
+        return False
+    except psycopg2.OperationalError as e:
+        print(f"Database connection error during registration: {e}")
         return False
     except Exception as e:
-        print(f"Error registering user: {e}")
+        print(f"Unexpected error during registration: {e}")
         return False
     finally:
         if conn:
@@ -153,7 +168,8 @@ def login_user(username, password):
             database=DB_NAME,
             user=DB_USER,
             password=DB_PASS,
-            port=DB_PORT
+            port=DB_PORT,
+            connect_timeout=10
         )
         c = conn.cursor()
         hashed_password = hash_password(password)
@@ -161,7 +177,7 @@ def login_user(username, password):
         user = c.fetchone()
         if user:
             print(f"User {username} logged in successfully with user_id {user[0]}")
-            return user[0]  # Return user_id
+            return user[0]
         print(f"Login failed for user {username}: Invalid credentials")
         return None
     except psycopg2.OperationalError as e:
