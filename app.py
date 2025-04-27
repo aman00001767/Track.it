@@ -67,9 +67,10 @@ def init_db():
                       password TEXT)''')
         conn.commit()
         print("Database initialized successfully with PostgreSQL")
+        return True
     except Exception as e:
         print(f"Failed to initialize database: {e}")
-        raise
+        return False
     finally:
         if conn is not None:
             conn.close()
@@ -77,13 +78,8 @@ def init_db():
 @app.before_request
 def initialize_database():
     if not hasattr(g, 'db_initialized'):
-        try:
-            init_db()
-            g.db_initialized = True
-            print("Database initialized successfully on request")
-        except Exception as e:
-            print(f"Database initialization failed on request: {e}")
-            g.db_initialized = False
+        g.db_initialized = init_db()
+        print(f"Database initialization on request: {'Success' if g.db_initialized else 'Failed'}")
 
 def save_chat(user_message, ai_response):
     conn = None
@@ -336,5 +332,6 @@ def view_past():
     return render_template('index.html', messages=formatted_chats, show_past=True)
 
 if __name__ == "__main__":
-    init_db()
+    if not init_db():  # Attempt to initialize, but don't crash if it fails
+        print("Database initialization failed at startup, proceeding without database (limited functionality)")
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
