@@ -16,6 +16,8 @@ app = Flask(__name__)
 # Configure session
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_FILE_DIR"] = "/tmp/flask_session"  # Use /tmp for session storage on Render
+app.config["SESSION_FILE_THRESHOLD"] = 500  # Limit number of session files
 Session(app)
 
 # Configure upload folder
@@ -23,7 +25,7 @@ Session(app)
 UPLOAD_FOLDER = '/opt/render/project/src/uploads'  # Use absolute path for Render
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Create the upload folder at startup with correct permissions
+# Create the upload folder at sstartup with correct permissions
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER, mode=0o755)
     print(f"Created upload folder: {UPLOAD_FOLDER}")
@@ -149,6 +151,7 @@ def register_user(username, password):
     return True
 
 def login_user(username, password):
+    conn = None
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
@@ -162,10 +165,15 @@ def login_user(username, password):
         c.execute("SELECT user_id FROM users WHERE username = %s AND password = %s", (username, hashed_password))
         user = c.fetchone()
         if user:
+            print(f"User {username} logged in successfully with user_id {user[0]}")
             return user[0]  # Return user_id
+        print(f"Login failed for user {username}: Invalid credentials")
+        return None
+    except psycopg2.OperationalError as e:
+        print(f"Database connection error during login: {e}")
         return None
     except Exception as e:
-        print(f"Error logging in: {e}")
+        print(f"Unexpected error during login: {e}")
         return None
     finally:
         if conn:
@@ -210,10 +218,11 @@ def login():
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
         user_id = login_user(username, password)
-        if user_id:
+        if user_id is not None:
             session['user_id'] = user_id
+            print(f"Session set for user_id {user_id}, redirecting to home")
             return redirect(url_for('home'))
-        return render_template('login.html', error="Invalid username or password")
+        return render_template('login.html', error="Invalid username or password, or database connection failed.")
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
