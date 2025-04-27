@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Track.it - Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a3c34, #0a1f1b);
+            font-family: 'Inter', sans-serif;
+            color: #e5e7eb;
+        }
+        .login-container {
+            background: #0a1f1b;
+            border: 1px solid #2f6b5b;
+        }
+        .gold-glow {
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        .money-icon::before {
+            content: '$';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4af37;
+        }
+        input {
+            background: #1a3c34; /* Darker green background */
+            border-color: #2f6b5b;
+        }
+        input:focus {
+            border-color: #d4af37 !important;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="login-container w-full max-w-md rounded-2xl shadow-2xl p-8" x-data="{ username: '', password: '' }">
+        <h2 class="text-2xl font-bold text-white text-center mb-6">Register for Track.it</h2>
+        <form method="POST" class="space-y-4">
+            <div class="relative">
+                <input type="text" name="username" placeholder="Username" required
+                       class="w-full p-3 pl-8 border border-[#2f6b5b] rounded-lg bg-[#1a3c34] text-gray-200 focus:outline-none money-icon"
+                       x-model="username" @focus="animateInput($event.target)" @blur="resetInput($event.target)">
+            </div>
+            <div class="relative">
+                <input type="password" name="password" placeholder="Password" required
+                       class="w-full p-3 pl-8 border border-[#2f6b5b] rounded-lg bg-[#1a3c34] text-gray-200 focus:outline-none money-icon"
+                       x-model="password" @focus="animateInput($event.target)" @blur="resetInput($event.target)">
+            </div>
+            <button type="submit"
+                    class="w-full p-3 bg-[#2f6b5b] text-white rounded-lg hover:bg-[#d4af37] transition-colors duration-300 gold-glow flex items-center justify-center">
+                    <span class="money-icon"></span> Register
+            </button>
+        </form>
+        {% if error %}
+            <p class="text-red-400 text-center mt-4">{{ error }}</p>
+        {% endif %}
+        <p class="text-center mt-4 text-gray-400">
+            Already have an account? <a href="{{ url_for('login') }}" class="text-[#d4af37] hover:underline">Login here</a>
+        </p>
+    </div>
+    <script>
+        function animateInput(input) {
+            anime({
+                targets: input,
+                scale: 1.02,
+                duration: 200,
+                easing: 'easeOutQuad'
+            });
+        }
+        function resetInput(input) {
+            anime({
+                targets: input,
+                scale: 1,
+                duration: 200,
+                easing: 'easeOutQuad'
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.querySelector('button[type="submit"]');
+            button.addEventListener('mouseenter', () => {
+                anime({
+                    targets: button,
+                    scale: 1.05,
+                    duration: 200,
+                    easing: 'easeOutQuad'
+                });
+            });
+            button.addEventListener('mouseleave', () => {
+                anime({
+                    targets: button,
+                    scale: 1,
+                    duration: 200,
+                    easing: 'easeOutQuad'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

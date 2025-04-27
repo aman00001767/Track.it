@@ -1,0 +1,229 @@
+{"input_text": "How do I categorize a $30 Netflix bill?", "output_text": "You could easily file that under *Entertainment*. Makes sense, right?"}
+{"input_text": "Is $50 on gas a transportation expense?", "output_text": "*Transportation.* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "Where should I put a $20 Uber ride?", "output_text": "*Transportation* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "How do I track a $100 grocery bill?", "output_text": "That looks like a *Groceries* expense to me."}
+{"input_text": "Is $75 for electricity a utility expense?", "output_text": "*Utilities* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "Where does a $15 Spotify subscription go?", "output_text": "I\u2019d say that fits under *Entertainment*. Seems like a good spot for it."}
+{"input_text": "How do I categorize a $200 rent payment?", "output_text": "*Housing* is a solid choice for this one. If you're splitting categories, maybe *Rent.* too."}
+{"input_text": "Is a $10 coffee an expense?", "output_text": "I\u2019d say that fits under *Dining*. Seems like a good spot for it."}
+{"input_text": "Where does a $60 phone bill belong?", "output_text": "*Utilities* would work great for that. Or even *Communication.* if you're using multiple labels."}
+{"input_text": "How do I track a $25 gym membership?", "output_text": "That looks like a *Health* expense to me."}
+{"input_text": "Is $40 on clothes a personal expense?", "output_text": "You could easily file that under *Clothing*. Makes sense, right?"}
+{"input_text": "Where do I categorize a $15 movie ticket?", "output_text": "You could easily file that under *Entertainment.*. Makes sense, right?"}
+{"input_text": "How should I log a $300 car payment?", "output_text": "You could easily file that under *Transportation*. Makes sense, right?"}
+{"input_text": "Is a $50 water bill a utility?", "output_text": "That looks like a *Utilities* expense to me."}
+{"input_text": "Where does a $20 pizza order go?", "output_text": "That looks like a *Dining* expense to me."}
+{"input_text": "How do I categorize a $10 bus fare?", "output_text": "*Transportation.* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "Is $80 on internet a utility expense?", "output_text": "*Utilities* is a solid choice for this one. If you're splitting categories, maybe *Communication* too."}
+{"input_text": "Where do I put a $5 app purchase?", "output_text": "*Entertainment* is a solid choice for this one. If you're splitting categories, maybe *Miscellaneous.* too."}
+{"input_text": "How do I track a $150 doctor visit?", "output_text": "*Health* would work great for that. Or even *Medical.* if you're using multiple labels."}
+{"input_text": "Is a $30 haircut a personal expense?", "output_text": "That looks like a *Personal* expense to me."}
+{"input_text": "Where does a $25 donation go?", "output_text": "You could easily file that under *Charity*. Makes sense, right?"}
+{"input_text": "How do I categorize a $40 parking fee?", "output_text": "*Transportation.* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "Is $15 on books an education expense?", "output_text": "You could easily file that under *Education*. Makes sense, right?"}
+{"input_text": "Where do I log a $60 cable bill?", "output_text": "That looks like a *Utilities* expense to me."}
+{"input_text": "How should I track a $200 vacation expense?", "output_text": "*Travel* is a solid choice for this one. If you're splitting categories, maybe *Entertainment.* too."}
+{"input_text": "Is a $10 gift an expense?", "output_text": "*Gifts* is a solid choice for this one. If you're splitting categories, maybe *Miscellaneous.* too."}
+{"input_text": "Where does a $50 pet food bill go?", "output_text": "*Pets* would work great for that. Or even *Miscellaneous.* if you're using multiple labels."}
+{"input_text": "How do I categorize a $30 train ticket?", "output_text": "*Transportation.* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "Is $100 on furniture a household expense?", "output_text": "I\u2019d say that fits under *Household*. Seems like a good spot for it."}
+{"input_text": "Where do I put a $20 bar tab?", "output_text": "You could easily file that under *Dining*. Makes sense, right?"}
+{"input_text": "How do I track a $75 insurance payment?", "output_text": "I\u2019d say that fits under *Insurance*. Seems like a good spot for it."}
+{"input_text": "Is a $15 concert ticket entertainment?", "output_text": "You could easily file that under *Entertainment*. Makes sense, right?"}
+{"input_text": "Where does a $40 taxi ride belong?", "output_text": "*Transportation.* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "How should I log a $25 yoga class?", "output_text": "You could easily file that under *Health*. Makes sense, right?"}
+{"input_text": "Is $60 on heating a utility expense?", "output_text": "*Utilities* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "Where do I categorize a $10 magazine?", "output_text": "You could easily file that under *Entertainment*. Makes sense, right?"}
+{"input_text": "How do I track a $50 vet bill?", "output_text": "*Pets* would work great for that. Or even *Health.* if you're using multiple labels."}
+{"input_text": "Is a $20 museum ticket an expense?", "output_text": "That looks like a *Entertainment* expense to me."}
+{"input_text": "Where does a $30 software subscription go?", "output_text": "*Subscriptions* is a solid choice for this one. If you're splitting categories, maybe *Work.* too."}
+{"input_text": "How do I categorize a $15 parking ticket?", "output_text": "*Transportation* would work great for that. Or even *Miscellaneous.* if you're using multiple labels."}
+{"input_text": "Is $50 on shoes a clothing expense?", "output_text": "That looks like a *Clothing* expense to me."}
+{"input_text": "Where do I put a $25 coffee shop bill?", "output_text": "That looks like a *Dining* expense to me."}
+{"input_text": "How should I track a $100 flight?", "output_text": "*Travel* is a solid choice for this one. If you're splitting categories, maybe *Transportation.* too."}
+{"input_text": "Is a $30 cleaning service a household expense?", "output_text": "That looks like a *Household* expense to me."}
+{"input_text": "Where does a $20 game purchase go?", "output_text": "*Entertainment.* is a solid choice for this one. If you're splitting categories, maybe *None* too."}
+{"input_text": "How do I categorize a $50 dentist visit?", "output_text": "That looks like a *Health* expense to me."}
+{"input_text": "Is $15 on snacks a food expense?", "output_text": "*Groceries* would work great for that. Or even *Food* if you're using multiple labels."}
+{"input_text": "Where do I log a $40 toll fee?", "output_text": "That looks like a *Transportation.* expense to me."}
+{"input_text": "How should I track a $25 art supply purchase?", "output_text": "You could easily file that under *Hobbies*. Makes sense, right?"}
+{"input_text": "Is $60 on trash service a utility?", "output_text": "You could easily file that under *Utilities*. Makes sense, right?"}
+{"input_text": "Where does a $10 lottery ticket go?", "output_text": "I\u2019d say that fits under *Entertainment*. Seems like a good spot for it."}
+{"input_text": "How do I categorize a $30 bike repair?", "output_text": "You could easily file that under *Transportation*. Makes sense, right?"}
+{"input_text": "Is a $20 flower purchase an expense?", "output_text": "You could easily file that under *Gifts*. Makes sense, right?"}
+{"input_text": "Where do I put a $50 car wash?", "output_text": "That looks like a *Transportation* expense to me."}
+{"input_text": "How should I track a $15 haircut?", "output_text": "*Personal* would work great for that. Or even *Grooming.* if you're using multiple labels."}
+{"input_text": "Is $40 on a new lamp a household expense?", "output_text": "That looks like a *Household* expense to me."}
+{"input_text": "Where does a $25 movie rental go?", "output_text": "*Entertainment.* would work great for that. Or even *None* if you're using multiple labels."}
+{"input_text": "How do I categorize a $60 vet visit?", "output_text": "*Pets* is a solid choice for this one. If you're splitting categories, maybe *Health.* too."}
+{"input_text": "Is a $10 bus pass a transportation expense?", "output_text": "You could easily file that under *Transportation*. Makes sense, right?"}
+{"input_text": "Where do I log a $30 laundry bill?", "output_text": "I\u2019d say that fits under *Household*. Seems like a good spot for it."}
+{"input_text": "How should I track a $50 charity donation?", "output_text": "I\u2019d say that fits under *Charity*. Seems like a good spot for it."}
+{"input_text": "Is $20 on headphones an entertainment expense?", "output_text": "That looks like a *Entertainment* expense to me."}
+{"input_text": "Where does a $15 toll payment go?", "output_text": "You could easily file that under *Transportation.*. Makes sense, right?"}
+{"input_text": "How do I categorize a $40 gym fee?", "output_text": "That looks like a *Health* expense to me."}
+{"input_text": "Is a $25 dining bill a food expense?", "output_text": "I\u2019d say that fits under *Dining*. Seems like a good spot for it."}
+{"input_text": "Where do I put a $30 pet toy purchase?", "output_text": "*Pets* is a solid choice for this one. If you're splitting categories, maybe *Miscellaneous.* too."}
+{"input_text": "How should I track a $100 hotel stay?", "output_text": "*Travel* is a solid choice for this one. If you're splitting categories, maybe *Accommodation.* too."}
+{"input_text": "Is $50 on a jacket a clothing expense?", "output_text": "You could easily file that under *Clothing*. Makes sense, right?"}
+{"input_text": "Where does a $20 lunch go?", "output_text": "*Dining* would work great for that. Or even *Food.* if you're using multiple labels."}
+{"input_text": "How do I categorize a $15 streaming service?", "output_text": "*Entertainment* would work great for that. Or even *Subscriptions.* if you're using multiple labels."}
+{"input_text": "Where do I log a $25 parking pass?", "output_text": "I\u2019d say that fits under *Transportation.*. Seems like a good spot for it."}
+{"input_text": "How should I track a $60 pet grooming bill?", "output_text": "*Pets* would work great for that. Or even *Grooming.* if you're using multiple labels."}
+{"input_text": "Is $30 on a textbook an education expense?", "output_text": "*Education* would work great for that. Or even *Personal* if you're using multiple labels."}
+{"input_text": "Where does a $45 haircut go?", "output_text": "You could easily file that under *Personal*. Makes sense, right?"}
+{"input_text": "What\u2019s the weather like today?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Who won the World Cup?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I fix my car?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the capital of France?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you write a poem?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What time is it?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "How do I cook pasta?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Who is the president?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best movie of 2023?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I learn Python?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the meaning of life?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Can you draw a picture?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How tall is Mount Everest?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the score of the game?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who invented the internet?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I play chess?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the temperature outside?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Can you tell me a joke?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "How do I fix a leaky faucet?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the population of China?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Who wrote Harry Potter?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I grow tomatoes?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the speed of light?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you sing a song?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I change a tire?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to lose weight?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who painted the Mona Lisa?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I start a business?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best book of all time?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you play an instrument?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I meditate?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the best way to save money?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who discovered America?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I make a cake?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to learn a language?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Can you solve a math problem?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I write a resume?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to travel?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who is the richest person in the world?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I fix a computer?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to invest money?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you cook a meal?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I start a garden?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to relax?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Who is the most famous actor?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I clean my house?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to study?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you give me advice?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I plan a trip?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to make friends?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who is the best musician?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay healthy?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to have fun?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a recipe?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I write a story?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be happy?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who is the best athlete?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I stay motivated?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be productive?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Can you give me a workout plan?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I improve my skills?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be successful?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who is the best chef?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay organized?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be creative?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a travel guide?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I improve my writing?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be confident?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Who is the best teacher?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay focused?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the best way to be kind?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a life hack?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I improve my memory?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be grateful?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Who is the best leader?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I stay positive?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be resilient?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you give me a motivational quote?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I improve my public speaking?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be empathetic?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Who is the best entrepreneur?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay calm?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the best way to be open-minded?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Can you give me a fun fact?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I improve my critical thinking?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be authentic?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who is the best scientist?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay curious?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to be innovative?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Can you give me a historical fact?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "How do I improve my emotional intelligence?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be resourceful?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Who is the best philosopher?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay humble?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to be inclusive?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a cultural fact?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "How do I improve my networking skills?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be adaptable?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who is the best artist?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I stay ambitious?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to be proactive?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Can you give me a scientific fact?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I improve my negotiation skills?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be strategic?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who is the best writer?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay disciplined?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the best way to be detail-oriented?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you give me a technological fact?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I improve my time management?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to be analytical?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who is the best designer?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay focused on goals?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a team player?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you give me a financial fact?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "How do I improve my decision-making?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the best way to be a good listener?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Who is the best public speaker?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay organized at work?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a mentor?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a health fact?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I improve my self-discipline?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a role model?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who is the best coach?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay engaged?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to be a change agent?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a motivational story?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I improve my self-esteem?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be a visionary?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "Who is the best innovator?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay inspired?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a change leader?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Can you give me a historical event?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I improve my self-awareness?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a thought leader?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Who is the best influencer?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay connected?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be a connector?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "Can you give me a cultural event?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I improve my adaptability?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be a collaborator?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who is the best communicator?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "How do I stay curious about the world?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "What\u2019s the best way to be a lifelong learner?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Can you give me a fun activity?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "How do I improve my creativity?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a problem solver?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "Who is the best strategist?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay motivated in tough times?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "What\u2019s the best way to be a critical thinker?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Can you give me a personal development tip?", "output_text": "I\u2019m better with money stuff\u2014try asking about how to track or categorize an expense!"}
+{"input_text": "How do I improve my emotional regulation?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "What\u2019s the best way to be a lifelong friend?", "output_text": "Hmm, that\u2019s not something I usually handle\u2014try asking about budgeting or expenses!"}
+{"input_text": "Who is the best negotiator?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
+{"input_text": "How do I stay positive in adversity?", "output_text": "That's outside my wheelhouse, but I can definitely help with financial questions."}
+{"input_text": "What\u2019s the best way to be a good citizen?", "output_text": "That one's a bit out of my range. Got any questions about spending or saving?"}
